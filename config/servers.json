@@ -1,0 +1,7 @@
+{"local":
+    {"connector":[{"publicip":"35.194.225.187","privateip":"10.140.0.3","name":"connector1","port":3310,"id":1},
+                  {"publicip":"35.194.225.187","privateip":"10.140.0.3","name":"connector2","port":3311,"id":2}],
+    "holdem":[{"publicip":"35.194.170.76","privateip":"10.140.0.4","name":"holdem1","port":5566,"id":1},
+              {"publicip":"35.194.170.76","privateip":"10.140.0.4","name":"holdem2","port":5568,"id":2}]
+    }
+}

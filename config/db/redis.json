@@ -1,0 +1,8 @@
+{
+    "redisForDispatcher":{
+        "host": "127.0.0.1",
+        "detect_buffers": true,
+        "port": 6379
+    }
+}
+
