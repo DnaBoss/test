@@ -25,7 +25,7 @@ export class TritonNode {
         return this.socketServer;
     }
 
-    public setServerPort(port: number): http.Server {
+    public setServerPort(port: string): http.Server {
         this.httpServer.listen(port, () => { console.log(`app listening on port  ${port}  , ${new Date()}`) });
         return this.httpServer;
     }

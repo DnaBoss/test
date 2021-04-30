@@ -21,7 +21,8 @@ var Builder = /** @class */ (function () {
         return specifyClass;
     };
     Builder.prototype.buildTritonNode = function (ip, port, service) {
-        var ssh = "ssh 13.212.70.13 mkdir cashtest";
+        var currentFold = __dirname;
+        var ssh = "ssh 13.212.70.13 cd " + currentFold + " node tritonNode.js ";
         exec(ssh, function (error, stdout, stderr) {
             console.log('error = ', error);
             console.log('stdout = ', stdout);
@@ -31,6 +32,7 @@ var Builder = /** @class */ (function () {
     return Builder;
 }());
 exports.Builder = Builder;
+console.log('process.argv = ', process.argv);
 var builder = Builder.getInstance();
 // builder.buildTritonNode('127.0.0.1', 5566, 'TritonNode')
 // let sepcClass = builder.getClass('tritonNode');

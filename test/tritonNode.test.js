@@ -6,7 +6,7 @@ const SocketIO = require('socket.io');
 describe('TritonNode  測試', () => {
 
     const app = require("express")();
-    const tritonNode = new TritonNode(null, app);
+    const tritonNode = new TritonNode(app);
     const ip = '127.0.0.1';
     const port = 5566;
 

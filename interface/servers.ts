@@ -9,7 +9,7 @@ export interface ServerConfig {
     publicip: string;
     privateip: string;
     name: string;
-    port: number;
+    port: string;
     id: number
 }
 

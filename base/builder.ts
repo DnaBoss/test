@@ -18,7 +18,7 @@ export class Builder {
     }
     public buildTritonNode(ip: string, port: number, service: string) {
         const currentFold = __dirname;
-        const ssh: string = `ssh 13.212.70.13 cd mini gam`;
+        const ssh: string = `ssh 13.212.70.13 cd ${currentFold} node tritonNode.js `;
         exec(ssh, function (error, stdout, stderr) {
             console.log('error = ', error);
             console.log('stdout = ', stdout);
@@ -26,6 +26,7 @@ export class Builder {
         });
     }
 }
+console.log('process.argv = ',process.argv)
 let builder = Builder.getInstance();
 // builder.buildTritonNode('127.0.0.1', 5566, 'TritonNode')
 // let sepcClass = builder.getClass('tritonNode');
