@@ -18,16 +18,23 @@ export class Builder {
     }
     public buildTritonNode(ip: string, port: number, service: string) {
         const currentFold = __dirname;
-        const ssh: string = `ssh 13.212.70.13 cd ${currentFold} node tritonNode.js `;
+        const ssh: string = `ssh 13.212.70.13 cd /test/base node proxy.js 3310`;
         exec(ssh, function (error, stdout, stderr) {
             console.log('error = ', error);
             console.log('stdout = ', stdout);
             console.log('stderr = ', stderr);
         });
     }
-}
-console.log('process.argv = ',process.argv)
+
+    private getServersConfig(env) {
+        const serversConfig = require('../config/servers.json');
+        console.log('serversConfig[env] =', serversConfig[env]);
+    }
+}    
+console.log('process.argv = ', process.argv)
+const env = process.argv[process.argv.length - 1];
 let builder = Builder.getInstance();
 // builder.buildTritonNode('127.0.0.1', 5566, 'TritonNode')
 // let sepcClass = builder.getClass('tritonNode');
 builder.buildTritonNode('13.212.70.13', 5566, 'tritonNode');
+// builder.getServersConfig(env);
