@@ -1,15 +1,20 @@
-export interface ServersConfig {
-    local: Servers
+export class ServersConfig {
+    local: ServersInfo
 }
-interface Servers {
+export class ServersInfo {
+    constructor(para: ServersInfo) {
+        this.connector = para.connector;
+        this.gameServer = para.gameServer;
+    }
     connector: Array<ServerConfig>;
-    holdem: Array<ServerConfig>
+    gameServer: Array<ServerConfig>
 }
-export interface ServerConfig {
+export class ServerConfig {
     publicip: string;
     privateip: string;
     name: string;
     port: string;
-    id: number
+    id: number;
+    serverType: string;
 }
 

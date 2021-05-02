@@ -8,12 +8,11 @@ import express from 'express';
 import socketIO from 'socket.io';
 import * as SocketIOClient from 'socket.io-client';
 import EventEmitter from 'node:events';
-export class TritonNode extends EventEmitter{
+export class TritonNode {
     httpServer: http.Server
     socketServer: socketIO.Server;
     app: express.Express;
     constructor(app: express.Express) {
-        super();
         this.app = app;
     }
 
@@ -32,7 +31,7 @@ export class TritonNode extends EventEmitter{
         return this.httpServer;
     }
 
-    public createConnection(io, ip: string, port: number, ops): SocketIOClient.Socket {
+    public createConnection(io, ip: string, port: string, ops): SocketIOClient.Socket {
         const uri = `http://${ip}:${port}`;
         let socket = io(uri, ops);
         return socket;
