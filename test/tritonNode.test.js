@@ -3,6 +3,7 @@ const TritonNode = require('../base/tritonNode').TritonNode;
 const http = require('http');
 const SocketIOClient = require('socket.io-client');
 const SocketIO = require('socket.io');
+const sinon = require('sinon');
 describe('TritonNode  測試', () => {
 
     const app = require("express")();
@@ -27,12 +28,18 @@ describe('TritonNode  測試', () => {
         expect(server).toBeInstanceOf(SocketIO);
     });
 
-    it('tritonNode 的 creatConnection 方法，可以建立 client ', () => {
-        const io = require('socket.io-client');
+    it('tritonNode 的 creatConnection 方法，會呼叫指定的 function', () => {
         const uri = `http://${ip}:${port}`;
         const ops = { 'path': '/triton', 'multiplex': false, 'transports': ['websocket'], 'query': { type: 'connector' } };
-        const socket = tritonNode.createConnection(io, ip, port, ops);
-        expect(io).toHaveBeenCalledWith(uri, ops);
+        const spy = sinon.spy();
+        tritonNode.createConnection(spy, ip, port, ops);
+        expect(spy.calledWith(uri, ops)).toBe(true);
+    });
+
+    it('tritonNode 的 creatConnection 方法，可以建立 socket 物件 ', () => {
+        const io = require('socket.io-client');
+        const ops = { 'path': '/triton', 'multiplex': false, 'transports': ['websocket'], 'query': { type: 'connector' } };
+        const socket =  tritonNode.createConnection(io, ip, port, ops);
         expect(socket).toHaveProperty('io');
     });
 });

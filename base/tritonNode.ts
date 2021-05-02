@@ -7,11 +7,13 @@ import http from 'http';
 import express from 'express';
 import socketIO from 'socket.io';
 import * as SocketIOClient from 'socket.io-client';
-export class TritonNode {
+import EventEmitter from 'node:events';
+export class TritonNode extends EventEmitter{
     httpServer: http.Server
     socketServer: socketIO.Server;
     app: express.Express;
     constructor(app: express.Express) {
+        super();
         this.app = app;
     }
 
