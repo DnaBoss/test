@@ -1,11 +1,8 @@
 import { ProcessArgs } from "./interface/processArgs";
 import { ServersInfo, ServerConfig } from "./interface/servers";
-import http from 'http';
-import { TritonNode } from "./base/tritonNode";
-
+import { TritonNode } from './base/tritonNode';
 const { networkInterfaces } = require('os');
 const nets = networkInterfaces();
-
 const ops = { path: '/triton', pingInterval: 10000, pingTimeout: 5000 };
 export class TritonProxy {
     private ServersInfo: ServersInfo;
@@ -20,13 +17,18 @@ export class TritonProxy {
     }
 
     public execProxyProcess() {
-        const ProxyClass = require(`${process.env.PWD}/base/${this.envArgs.serverType}`);
-        const proxyNode: TritonNode = this.createServer(ProxyClass, this.envArgs.port);
+        const ProxyClass = require(`./base/${this.envArgs.serverType}`);
+        const proxyNode: TritonNode = this.createHttpServer(this.envArgs.instanceId, this.envArgs.serverType, ProxyClass, this.envArgs.port);
         let flattenArray = [];
         this.ServersInfo.connector.forEach(info => flattenArray.push(info));
         this.ServersInfo.gameServer.forEach(info => flattenArray.push(info));
-        const result = flattenArray.filter((info: ServerConfig) => this.needConnected(info.privateip, info.port));
-        const sockets = result.map((info: ServerConfig) => this.connect(proxyNode, info.serverType, info.port));
+        const result: ServerConfig[] = flattenArray.filter((info: ServerConfig) => this.needConnected(info.privateip, info.port));
+
+        // this.connect(proxyNode, result[0].privateip, result[0].port);
+        const sockets = result.map((info: ServerConfig) => {
+            this.connect(proxyNode, info.privateip, info.port)
+        });
+        // return { sockets, server: proxyNode };
     }
 
     private connect(proxyNode: TritonNode, ip: string, port: string) {
@@ -34,21 +36,18 @@ export class TritonProxy {
         return proxyNode.createConnection(SocketIOClient, ip, port, ops);
     }
 
-    private createServer(ProxyClass: any, port: string): TritonNode {
+    private createHttpServer(id: string, type: string, ProxyClass: any, port: string): TritonNode {
         const app = require("express")();
-        const proxyClass: TritonNode = new ProxyClass(app);
+        const tritonNode: TritonNode = new ProxyClass(id, type, app);
         const io = require('socket.io');
-        proxyClass.createHttpServer(app);
-        proxyClass.setServerPort(port);
-        proxyClass.creatSocketServer(io, ops);
-        return proxyClass;
+        tritonNode.createHttpServer(app);
+        tritonNode.setServerPort(port);
+        tritonNode.creatSocketServer(io, ops);
+        return tritonNode;
     }
-    
+
     private needConnected(ip, port): boolean {
-        if (this.privateIPs.includes(ip)) {
-            return false;
-        }
-        if (this.envArgs.port == port) {
+        if (this.privateIPs.includes(ip) && this.envArgs.port == port) {
             return false;
         }
         return true;
@@ -59,14 +58,15 @@ export class TritonProxy {
         for (const name of Object.keys(nets)) {
             for (const net of nets[name]) {
                 // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-                net.family === 'IPv4' && !net.internal ? results.push(net.address) : null;
+                // net.family === 'IPv4' && !net.internal ? results.push(net.address) : null;
+                results.push(net.address)
             }
         }
         return results;
     }
 
     public getServersInfo(): ServersInfo {
-        const allServerInfo = require(`${process.env.PWD}/config/servers.json`);
+        const allServerInfo = require(`./config/servers.json`);
         const serverInfo = new ServersInfo(allServerInfo[this.env]);
         return serverInfo;
     }
@@ -93,6 +93,3 @@ export class TritonProxy {
 }
 let proxy = new TritonProxy('local');
 proxy.execProxyProcess();
-
-
-// server.on('connect', (data) => { console.log(data) });

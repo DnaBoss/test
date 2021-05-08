@@ -14,7 +14,7 @@
     "TABLE_MAPPING_GAME":{"77889":38},
     "PLAYER_ACTION":{"CALL":"call","FOLD":"fold","PASS":"pass","ALL_IN":"allIn","RISE":"rise"},
     "TIME":{"BET":10000},
-    "GAME":{"HOLDEM":{"MINIMUM_PLAYER":2,"MAXIMUM_PLAYER":9}},
+    "GAME":{"HOLDEM":{"MINIMUM_PLAYER":2,"MAXIMUM_PLAYER":9,"REGISTER":[]}},
     "EVENT":{"DEAL_CARDS":"dealHoleCards","STATE_CHANGE":"stateChange","DEAL_COMMUNITY_CARDS":"dealCommunityCards","RESULT":"result"},
     "STATE":{"JOIN":"JOIN","PRE_FLOP":"PREFLOP","FLOP":"FLOP","TURN":"TURN","RIVER":"RIVER","SHOWDOWN":"SHOWDOWN"}
 }

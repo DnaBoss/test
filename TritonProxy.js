@@ -15,32 +15,33 @@ var TritonProxy = /** @class */ (function () {
     }
     TritonProxy.prototype.execProxyProcess = function () {
         var _this = this;
-        var ProxyClass = require(process.env.PWD + "/base/" + this.envArgs.serverType);
-        var proxyNode = this.createServer(ProxyClass, this.envArgs.port);
+        var ProxyClass = require("./base/" + this.envArgs.serverType);
+        var proxyNode = this.createHttpServer(this.envArgs.instanceId, this.envArgs.serverType, ProxyClass, this.envArgs.port);
         var flattenArray = [];
         this.ServersInfo.connector.forEach(function (info) { return flattenArray.push(info); });
         this.ServersInfo.gameServer.forEach(function (info) { return flattenArray.push(info); });
         var result = flattenArray.filter(function (info) { return _this.needConnected(info.privateip, info.port); });
-        var sockets = result.map(function (info) { return _this.connect(proxyNode, info.serverType, info.port); });
+        // this.connect(proxyNode, result[0].privateip, result[0].port);
+        var sockets = result.map(function (info) {
+            _this.connect(proxyNode, info.privateip, info.port);
+        });
+        // return { sockets, server: proxyNode };
     };
     TritonProxy.prototype.connect = function (proxyNode, ip, port) {
         var SocketIOClient = require('socket.io-client');
         return proxyNode.createConnection(SocketIOClient, ip, port, ops);
     };
-    TritonProxy.prototype.createServer = function (ProxyClass, port) {
+    TritonProxy.prototype.createHttpServer = function (id, type, ProxyClass, port) {
         var app = require("express")();
-        var proxyClass = new ProxyClass(app);
+        var tritonNode = new ProxyClass(id, type, app);
         var io = require('socket.io');
-        proxyClass.createHttpServer(app);
-        proxyClass.setServerPort(port);
-        proxyClass.creatSocketServer(io, ops);
-        return proxyClass;
+        tritonNode.createHttpServer(app);
+        tritonNode.setServerPort(port);
+        tritonNode.creatSocketServer(io, ops);
+        return tritonNode;
     };
     TritonProxy.prototype.needConnected = function (ip, port) {
-        if (this.privateIPs.includes(ip)) {
-            return false;
-        }
-        if (this.envArgs.port == port) {
+        if (this.privateIPs.includes(ip) && this.envArgs.port == port) {
             return false;
         }
         return true;
@@ -52,13 +53,14 @@ var TritonProxy = /** @class */ (function () {
             for (var _b = 0, _c = nets[name_1]; _b < _c.length; _b++) {
                 var net = _c[_b];
                 // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-                net.family === 'IPv4' && !net.internal ? results.push(net.address) : null;
+                // net.family === 'IPv4' && !net.internal ? results.push(net.address) : null;
+                results.push(net.address);
             }
         }
         return results;
     };
     TritonProxy.prototype.getServersInfo = function () {
-        var allServerInfo = require(process.env.PWD + "/config/servers.json");
+        var allServerInfo = require("./config/servers.json");
         var serverInfo = new servers_1.ServersInfo(allServerInfo[this.env]);
         return serverInfo;
     };
@@ -86,4 +88,3 @@ var TritonProxy = /** @class */ (function () {
 exports.TritonProxy = TritonProxy;
 var proxy = new TritonProxy('local');
 proxy.execProxyProcess();
-// server.on('connect', (data) => { console.log(data) });

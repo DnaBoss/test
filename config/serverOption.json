@@ -1,4 +1,0 @@
-{
-    "connector":{"path":"/poker","pingInterval":10000,"pingTimeout":5000},
-    "holdem":{"path":"/poker","pingInterval":10000,"pingTimeout":5000}
-}

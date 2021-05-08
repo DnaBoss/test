@@ -1,8 +1,8 @@
 import { TritonNode } from "./tritonNode";
 import express from 'express';
 class Connector extends TritonNode {
-    constructor(app: express.Express) {
-        super(app);
+    constructor(id: string, type: string, app: express.Express) {
+        super(id, type, app);
     }
 }
 module.exports = Connector;

@@ -3,10 +3,37 @@
         {
             "name": "tritonNode-1",
             "script": "tritonProxy.js",
-            "args": "port=3310 mode=dev serverType=connector instanceId=connector_0 ",
+            "args": "port=3310 mode=local serverType=connector instanceId=0 ",
             "log_date_format": "YYYY-MM-DD HH:mm Z",
             "env": {
-                "NODE_ENV": "dev"
+                "NODE_ENV": "local"
+            }
+        },
+        {
+            "name": "tritonNode-2",
+            "script": "tritonProxy.js",
+            "args": "port=3311 mode=local serverType=connector instanceId=1 ",
+            "log_date_format": "YYYY-MM-DD HH:mm Z",
+            "env": {
+                "NODE_ENV": "local"
+            }
+        },
+        {
+            "name": "tritonNode-3",
+            "script": "tritonProxy.js",
+            "args": "port=5566 mode=local serverType=holdem instanceId=2 ",
+            "log_date_format": "YYYY-MM-DD HH:mm Z",
+            "env": {
+                "NODE_ENV": "local"
+            }
+        },
+        {
+            "name": "tritonNode-4",
+            "script": "tritonProxy.js",
+            "args": "port=5567 mode=local serverType=holdem instanceId=3 ",
+            "log_date_format": "YYYY-MM-DD HH:mm Z",
+            "env": {
+                "NODE_ENV": "local"
             }
         }
     ]

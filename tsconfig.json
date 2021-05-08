@@ -12,11 +12,13 @@
             "es7"
         ],
         "sourceMap": false,
-        "types": [ "node" ],
+        "types": [
+            "node"
+        ],
         "typeRoots": [
             "node_modules/@types/"
         ],
-        "esModuleInterop": true, 
+        "esModuleInterop": true,
         "noUnusedLocals": false,
         "noUnusedParameters": false,
         "declaration": false,

@@ -18,8 +18,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tritonNode_1 = require("./tritonNode");
 var Connector = /** @class */ (function (_super) {
     __extends(Connector, _super);
-    function Connector(app) {
-        return _super.call(this, app) || this;
+    function Connector(id, type, app) {
+        return _super.call(this, id, type, app) || this;
     }
     return Connector;
 }(tritonNode_1.TritonNode));
