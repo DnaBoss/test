@@ -1,8 +1,7 @@
 import { ProcessArgs } from "./interface/processArgs";
 import { ServersInfo, ServerConfig } from "./interface/servers";
 import { TritonNode } from './base/tritonNode';
-const { networkInterfaces } = require('os');
-const nets = networkInterfaces();
+const nets = require('os').networkInterfaces();
 const ops = { path: '/triton', pingInterval: 10000, pingTimeout: 5000 };
 export class TritonProxy {
     private ServersInfo: ServersInfo;
@@ -19,16 +18,16 @@ export class TritonProxy {
     public execProxyProcess() {
         const ProxyClass = require(`./base/${this.envArgs.serverType}`);
         const proxyNode: TritonNode = this.createHttpServer(this.envArgs.instanceId, this.envArgs.serverType, ProxyClass, this.envArgs.port);
-        let flattenArray = [];
-        this.ServersInfo.connector.forEach(info => flattenArray.push(info));
-        this.ServersInfo.gameServer.forEach(info => flattenArray.push(info));
-        const result: ServerConfig[] = flattenArray.filter((info: ServerConfig) => this.needConnected(info.privateip, info.port));
+        this.createSocketServer(proxyNode);
+        const connectionList = this.getConnectionList();
+        return connectionList.map(info => { this.connect(proxyNode, info.privateip, info.port) });
+    }
 
-        // this.connect(proxyNode, result[0].privateip, result[0].port);
-        const sockets = result.map((info: ServerConfig) => {
-            this.connect(proxyNode, info.privateip, info.port)
-        });
-        // return { sockets, server: proxyNode };
+    private getConnectionList(): ServerConfig[] {
+        let connectionList = [];
+        this.ServersInfo.connector.forEach(info => connectionList.push(info));
+        this.ServersInfo.gameServer.forEach(info => connectionList.push(info));
+        return connectionList.filter((info: ServerConfig) => this.needConnected(info.privateip, info.port));
     }
 
     private connect(proxyNode: TritonNode, ip: string, port: string) {
@@ -36,13 +35,17 @@ export class TritonProxy {
         return proxyNode.createConnection(SocketIOClient, ip, port, ops);
     }
 
+    private createSocketServer(tritonNode) {
+        const io = require('socket.io');
+        tritonNode.creatSocketServer(io, ops);
+        return tritonNode;
+    }
+
     private createHttpServer(id: string, type: string, ProxyClass: any, port: string): TritonNode {
         const app = require("express")();
         const tritonNode: TritonNode = new ProxyClass(id, type, app);
-        const io = require('socket.io');
         tritonNode.createHttpServer(app);
         tritonNode.setServerPort(port);
-        tritonNode.creatSocketServer(io, ops);
         return tritonNode;
     }
 

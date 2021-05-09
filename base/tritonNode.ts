@@ -2,7 +2,6 @@ import http from 'http';
 import express from 'express';
 import socketIO from 'socket.io';
 import * as SocketIOClient from 'socket.io-client';
-// import EventEmitter from 'node:events';
 export class TritonNode {
     httpServer: http.Server
     socketServer: socketIO.Server;
@@ -32,7 +31,6 @@ export class TritonNode {
             console.log(`connected id:${socket.id}`)
             socket.on('disconnect', function (reason) { console.log('reason :', reason) });
         })
-        // this.socketServer.on('disconnect', function (socket, res) { console.log(` disconnect:${socket.id} res:`, res) })?
         return this.socketServer;
     }
 
@@ -45,7 +43,7 @@ export class TritonNode {
     public createConnection(io, ip: string, port: string, ops): SocketIOClient.Socket {
         const uri = `http://${ip}:${port}`;
         let socket = io(uri, ops);
-        socket.on('connect', function () { console.log(`${ip}:${port} 連到了`) });
+        // socket.on('connect', function () { console.log(`${ip}:${port} 連到了`) });
         return socket;
     }
 
