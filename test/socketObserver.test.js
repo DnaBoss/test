@@ -19,19 +19,17 @@ describe('SocketObserver  測試', () => {
         expect(_server).toEqual(realServer);
     });
 
-    it('SocketObserver 的 addSocket 可以監新增連線的 socket', () => {
-        const id = 77889;
-        let sockets = socketObserver.addSocket(id, realSocket);
-        expect(sockets[id]).toEqual(realSocket);
+    it('SocketObserver 的 subscribe 可以新增參與的房間', () => {
+        const socket = socketObserver.subscribe(realSocket.id, 'test');
+        const rooms = Object.keys(socket.adapter.rooms);
+        expect(rooms.includes('test')).toEqual(true);
     });
 
-    it('SocketObserver 的 addSocket 可以監新增連線的 socket', () => {
-        const id = 77889;
-        let sockets = socketObserver.addSocket(id, realSocket);
-        expect(sockets[id]).toEqual(realSocket);
+    it('SocketObserver 的 unsubscribe 可以新增參與的房間', () => {
+        const socket = socketObserver.unsubscribe(realSocket.id, 'test');
+        const rooms = Object.keys(socket.adapter.rooms);
+        expect(rooms.includes('test')).toEqual(false);
     });
-
-
 
 });
 

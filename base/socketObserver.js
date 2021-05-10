@@ -14,7 +14,16 @@ var SocketObserver = /** @class */ (function () {
         this.socketDict[id] = socket;
         return this.socketDict;
     };
-    SocketObserver.prototype.subscribe = function () { };
+    SocketObserver.prototype.subscribe = function (id, channel) {
+        var socket = this.server.of('/').connected[id];
+        socket.join(channel);
+        return socket;
+    };
+    SocketObserver.prototype.unsubscribe = function (id, channel) {
+        var socket = this.server.of('/').connected[id];
+        socket.leave(channel);
+        return socket;
+    };
     return SocketObserver;
 }());
 exports.SocketObserver = SocketObserver;

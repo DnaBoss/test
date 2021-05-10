@@ -17,5 +17,19 @@ export class SocketObserver {
         return this.socketDict;
     }
 
-    subscribe() { }
+    subscribe(id: string, channel: string) {
+        const socket = this.server.of('/').connected[id];
+        socket.join(channel);
+        return socket;
+    }
+
+    unsubscribe(id: string, channel: string) {
+        const socket = this.server.of('/').connected[id];
+        socket.leave(channel);
+        return socket;
+    }
+
+    
+
+
 }
