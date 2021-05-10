@@ -1,4 +1,5 @@
 {
+    "SERVICE":{"CONNECTOR":{"ROOMS":[],"REGISTER":[]},"HOLDEM":{"ROOMS":[],"REGISTER":[]}},
     "ACTION": {
         "SERVER_RUN": "serverRun",
         "CREATE_TABLE":"createTable"
