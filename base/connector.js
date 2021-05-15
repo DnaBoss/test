@@ -19,7 +19,9 @@ var tritonNode_1 = require("./tritonNode");
 var Connector = /** @class */ (function (_super) {
     __extends(Connector, _super);
     function Connector(id, type, app) {
-        return _super.call(this, id, type, app) || this;
+        var _this = _super.call(this, id, type, app) || this;
+        console.log('Connector start');
+        return _this;
     }
     return Connector;
 }(tritonNode_1.TritonNode));

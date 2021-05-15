@@ -43,10 +43,4 @@ describe('TritonProxy  測試', () => {
         socketServerSpy.restore();
     });
 
-    it('TritonNodeHub 的  sendTo 方法可以發送訊息給指定的 serverType ', () => {
-        // let node = tritonNOdeHub.sendTo(consts.SERVER_TYPE.CONNECTOR, 'gg wp');
-        // expect(node).toEqual('test');
-        // let hub = tritonNOdeHub.removeNode('test1', 1);
-        // expect(hub.test1[1]).toEqual(undefined);
-    });
 });

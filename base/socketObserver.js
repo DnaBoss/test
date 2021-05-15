@@ -9,8 +9,6 @@ var SocketObserver = /** @class */ (function () {
     }
     SocketObserver.prototype.getServer = function () { return this.server; };
     SocketObserver.prototype.addSocket = function (id, socket) {
-        // socket.join(id, err => err ? console.log(' socket join error', err) : null);
-        // socket.join(type, err => err ? console.log(' socket join  error', err) : null);
         this.socketDict[id] = socket;
         return this.socketDict;
     };
@@ -23,6 +21,9 @@ var SocketObserver = /** @class */ (function () {
         var socket = this.server.of('/').connected[id];
         socket.leave(channel);
         return socket;
+    };
+    SocketObserver.prototype.publish = function (channel, event, msg) {
+        return this.server.in(channel).emit(event, msg);
     };
     return SocketObserver;
 }());

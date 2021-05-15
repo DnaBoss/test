@@ -19,7 +19,9 @@ var tritonNode_1 = require("./tritonNode");
 var Holdem = /** @class */ (function (_super) {
     __extends(Holdem, _super);
     function Holdem(id, type, app) {
-        return _super.call(this, id, type, app) || this;
+        var _this = _super.call(this, id, type, app) || this;
+        console.log('Holdem start');
+        return _this;
     }
     return Holdem;
 }(tritonNode_1.TritonNode));

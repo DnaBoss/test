@@ -11,8 +11,6 @@ export class SocketObserver {
     getServer() { return this.server; }
 
     addSocket(id: string, socket: SocketIO.Socket) {
-        // socket.join(id, err => err ? console.log(' socket join error', err) : null);
-        // socket.join(type, err => err ? console.log(' socket join  error', err) : null);
         this.socketDict[id] = socket;
         return this.socketDict;
     }
@@ -29,7 +27,11 @@ export class SocketObserver {
         return socket;
     }
 
-    
+    publish(channel: string, event: string, msg): boolean {
+        return this.server.in(channel).emit(event, msg);
+    }
+
+
 
 
 }
